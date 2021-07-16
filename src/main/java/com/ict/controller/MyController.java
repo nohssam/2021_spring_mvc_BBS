@@ -1,16 +1,27 @@
 package com.ict.controller;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.service.MyService;
 import com.ict.service.Paging;
 import com.ict.vo.BVO;
+import com.ict.vo.CVO;
 
 @Controller
 public class MyController {
@@ -20,7 +31,7 @@ public class MyController {
 	private Paging paging;
 	
 	@RequestMapping("list.do")
-	public ModelAndView getListCommand(@RequestParam("cPage")String cPage) {
+	public ModelAndView getListCommand(@ModelAttribute("cPage")String cPage) {
 		try {
 			ModelAndView mv = new ModelAndView("list");
 			// 전체 게시물의 수
@@ -59,11 +70,128 @@ public class MyController {
 			List<BVO> list = myService.selectBVOList(paging.getBegin(), paging.getEnd());
 			
 			mv.addObject("list", list);
-			mv.addObject("paging", paging);
+			mv.addObject("pvo", paging);
 			return mv;
 		} catch (Exception e) {
 			System.out.println(e);
 			return new ModelAndView("error");
 		}
 	}
+	@RequestMapping("write.do")
+	public ModelAndView writeCommand(@ModelAttribute("cPage")String cPage) {
+		return new ModelAndView("write");
+	}
+	
+	@RequestMapping(value = "write_ok.do", method = RequestMethod.POST)
+	public ModelAndView writeOkCommand(BVO bvo, HttpServletRequest request, 
+			@ModelAttribute("cPage")String cPage) {
+		try {
+			String path = request.getSession().getServletContext().getRealPath("/resources/upload");
+			MultipartFile file = bvo.getF_name();
+			if(file.isEmpty()) {
+				bvo.setFile_name("");
+			}else {
+				bvo.setFile_name(file.getOriginalFilename());
+			}
+			int result = myService.insertBVO(bvo);
+			if(result>0) {
+				if(! bvo.getFile_name().isEmpty()) {
+					byte[] in = file.getBytes();
+					File out = new File(path, bvo.getFile_name());
+					FileCopyUtils.copy(in, out);
+				}
+				return new ModelAndView("redirect:list.do?cPage="+cPage);
+			}else{
+				return new ModelAndView("redirect:write.do?cPage="+cPage);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return new ModelAndView("redirect:write.do?cPage="+cPage);
+		}
+	}
+	
+	@RequestMapping("onelist.do")
+	public ModelAndView oneListCommand(@RequestParam("b_idx")String b_idx,
+			@ModelAttribute("cPage")String cPage) {
+		try {
+			ModelAndView mv = new ModelAndView("onelist");
+			
+			// 조회수 업데이트 및 상세보기
+			BVO bvo = myService.updateBVO_selectBVOOneList(b_idx);
+			
+			mv.addObject("bvo", bvo);
+			return mv;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
+	
+	@RequestMapping(value = "clist.do", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public List<CVO> cListCommand(@RequestParam("b_idx")String b_idx){
+		try {
+			return myService.selectCVOList(b_idx);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "c_insert.do", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public int c_insertCommand(CVO cvo){
+		try {
+			return myService.insertCVO(cvo);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return 0;
+	}
+	@RequestMapping(value = "c_delete.do", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public int c_deletCommand(@RequestParam("c_idx")String c_idx){
+		try {
+			return myService.deleteCVO(c_idx);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return 0;
+	}
+	@RequestMapping("delete.do")
+	public ModelAndView deleteCommand(@ModelAttribute("cPage")String cPage,
+			@ModelAttribute("b_idx")String b_idx) {
+		return new ModelAndView("delete");
+	}
+	
+	@RequestMapping(value = "pwd_ck.do", produces = "text/html; charset=utf-8")
+	@ResponseBody
+	public Map<String, Integer> pwd_chkCommand(@ModelAttribute("b_idx")String b_idx){
+		try {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			int result1 = myService.deleteCVOComm_All(b_idx); 
+			int result2 = myService.deleteBVO(b_idx);
+			if(result1>0 && result2>0) {
+				map.put("result", 1);
+			}else {
+				map.put("result", 0);
+			}
+			return map;
+		} catch (Exception e) {
+			return null; 
+		}
+	}
+	@RequestMapping("delete_ok.do")
+	public ModelAndView deleteOKCommand(@ModelAttribute("cPage")String cPage,
+			@ModelAttribute("b_idx")String b_idx) {
+		return new ModelAndView("delete");
+	}
 }
+
+
+
+
+
+
+
+

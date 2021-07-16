@@ -26,26 +26,39 @@ public class MyServiceImpl implements MyService{
 
 	@Override
 	public int insertBVO(BVO bvo) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return myDAO.insertBVO(bvo);
 	}
 
 	@Override
-	public BVO selectBVOOneList(String b_idx) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public BVO updateBVO_selectBVOOneList(String b_idx) throws Exception {
+		 int result = myDAO.updateBVOHit(b_idx);
+		 BVO bvo = myDAO.selectBVOOneList(b_idx);
+		return bvo;
+	} 
+
+	@Override
+	public List<CVO> selectCVOList(String b_idx) throws Exception {
+		return myDAO.selectCVOList(b_idx);
 	}
 
+	@Override
+	public int insertCVO(CVO cvo) throws Exception {
+		return myDAO.insertCVO(cvo);
+	}
+
+	@Override
+	public int deleteCVO(String c_idx) throws Exception {
+		return myDAO.deleteCVO(c_idx);
+	}
+	
 	@Override
 	public int deleteCVOComm_All(String b_idx) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return myDAO.deleteCVOComm_All(b_idx);
 	}
 
 	@Override
-	public int deleteBVO(BVO bvo) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteBVO(String b_idx) throws Exception {
+		return myDAO.deleteBVO(b_idx);
 	}
 
 	@Override
@@ -54,28 +67,7 @@ public class MyServiceImpl implements MyService{
 		return 0;
 	}
 
-	@Override
-	public int updateBVOHit(String b_idx) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
-	@Override
-	public List<CVO> selectCVOList(String b_idx) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int insertCVO(CVO cvo) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int deleteCVO(String c_idx) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 }

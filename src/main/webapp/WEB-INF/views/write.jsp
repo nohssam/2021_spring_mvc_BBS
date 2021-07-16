@@ -46,20 +46,20 @@
 </style>
 <script type="text/javascript">
 	function list_go(f) {
-		f.action="${pageContext.request.contextPath}/MyController?cmd=list";
+		f.action="list.do?cPage=${cPage}";
 		f.submit();
 	}
 	function send_go(f) {
 		//유효성 검사
 		for (var i = 0; i < f.elements.length; i++) {
 			if(f.elements[i].value==""){
-				if(i==3||i==2) continue;
+				if(i==2||i==3) continue;
 				alert(f.elements[i].name+"를 입력해주세요");
 				f.elements[i].focus();
 				return;
 			}
 		}
-		f.action="${pageContext.request.contextPath}/MyController?cmd=write_ok";
+		f.action="write_ok.do";
 		f.submit();
 	}
 </script>
@@ -89,7 +89,7 @@
 				</tr>
 				<tr>
 					<th>첨부파일:</th>
-					<td><input type="file" name="file_name"></td>
+					<td><input type="file" name="f_name"></td>
 				</tr>
 				<tr>
 					<th>비밀번호:</th>
@@ -100,6 +100,7 @@
 						<input type="button" value="보내기" onclick="send_go(this.form)">
 						<input type="reset" value="다시">
 						<input type="button" value="목록" onclick="list_go(this.form)"/>
+						<input type="hidden" name="cPage" value="${cPage}">
 					</td>
 				</tr>
 			</tbody>

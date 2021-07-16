@@ -1,7 +1,18 @@
 package com.ict.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class BVO {
 	private String b_idx, subject, writer, content, file_name, pwd, write_date, hit;
+	private MultipartFile f_name;
+		
+	public MultipartFile getF_name() {
+		return f_name;
+	}
+
+	public void setF_name(MultipartFile f_name) {
+		this.f_name = f_name;
+	}
 
 	public String getB_idx() {
 		return b_idx;
