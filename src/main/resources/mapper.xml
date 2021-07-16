@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<!-- mapper가 여러개 일때 namespace 로 구분한다. -->
+<mapper namespace="bbs">
+	<!-- 전체 게시물의 수 -->
+	<select id="count" resultType="int">
+		select count(*) from bbs_t
+	</select>
+	
+	<!-- 시작번호와 끝번호를 받아서 해당 리스트 출력   -->
+	<select id="list" parameterType="Map" resultType="com.ict.vo.BVO">
+		select * from (
+			select rownum r_num, a.* from (
+				select * from bbs_t order by b_idx desc
+			) a
+		) where r_num between #{begin} and #{end}
+	</select>
+</mapper>
+
+
+
+
+
+
+
