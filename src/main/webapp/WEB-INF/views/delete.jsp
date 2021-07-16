@@ -56,12 +56,15 @@
 			url : "pwd_ck.do",
 			method:"post",
 			data : "pwd="+$("#pwd").val()+"&b_idx=${b_idx}",
-			dataType :"text",
+			dataType :"json",
+			async : false,
 			success : function(data) {
+				console.log(data);
 				if(data=='0'){
 					alert("비밀번호 틀림");
 					$("#pwd").val("");
 					$("#pwd").focus("");
+				
 				}else if(data=='1'){
 					alert("비밀번호 맞습니다.");
 					chk = true;
@@ -71,8 +74,7 @@
 				alert("읽기실패");
 			}
 		});
-		return false;
-		
+			
 		if(chk){
 			f.action="delete_ok.do";
 			f.submit();
@@ -95,6 +97,7 @@
 						<input type="button" value="삭제" onclick="delete_ok(this.form)">
 						<input type="button" value="목록" onclick="list_go(this.form)"/>
 						<input type="hidden" name="b_idx" value="${b_idx}">
+						<input type="hidden" name="cPage" value="${cPage}">
 					</td>
 				</tr>
 			</tbody>

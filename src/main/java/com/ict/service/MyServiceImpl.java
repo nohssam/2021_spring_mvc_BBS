@@ -60,7 +60,10 @@ public class MyServiceImpl implements MyService{
 	public int deleteBVO(String b_idx) throws Exception {
 		return myDAO.deleteBVO(b_idx);
 	}
-
+	@Override
+	public int selectPwdchk(BVO bvo) throws Exception {
+		return myDAO.selectPwdchk(bvo);
+	}
 	@Override
 	public int updateBVO(BVO bvo) throws Exception {
 		// TODO Auto-generated method stub

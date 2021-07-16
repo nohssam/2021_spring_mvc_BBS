@@ -13,10 +13,13 @@ public interface MyDAO {
 	int updateBVOHit(String b_idx) throws Exception;
 	BVO selectBVOOneList(String b_idx) throws Exception;
 	
+	int selectPwdchk(BVO bvo) throws Exception;
+	
 	int deleteCVOComm_All(String b_idx) throws Exception;
 	int deleteBVO(String b_idx) throws Exception;
 	
 	int updateBVO(BVO bvo) throws Exception;
+	
 	List<CVO> selectCVOList(String b_idx) throws Exception;
 	int insertCVO(CVO cvo) throws Exception;
 	int deleteCVO(String c_idx) throws Exception; 

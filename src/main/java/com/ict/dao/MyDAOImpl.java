@@ -70,6 +70,11 @@ public class MyDAOImpl implements MyDAO{
 	}
 
 	@Override
+	public int selectPwdchk(BVO bvo) throws Exception {
+		return sqlSessionTemplate.selectOne("pwd_chk", bvo);
+	}
+	
+	@Override
 	public int updateBVO(BVO bvo) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;

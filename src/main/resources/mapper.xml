@@ -49,6 +49,23 @@
 	<insert id="c_delete" parameterType="String">
 		delete from comment_t where c_idx = #{c_idx}
 	</insert>
+	
+	
+	<!-- 비번 확인 -->
+	<select id="pwd_chk" parameterType="com.ict.vo.BVO" resultType="int">
+		select count(*) from bbs_t where b_idx=#{b_idx} and pwd=#{pwd}
+	</select>
+	
+	<!-- 댓글 전체 삭제 -->
+	<delete id="c_delete_all" parameterType="String">
+		delete from comment_t where b_idx = #{b_idx}
+	</delete>
+	<!-- 원글 삭제 -->
+	<delete id="delete" parameterType="String">
+		delete from bbs_t where b_idx = #{b_idx}
+	</delete>
+	
+	
 </mapper>
 
 

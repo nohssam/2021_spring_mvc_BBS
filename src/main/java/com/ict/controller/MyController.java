@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -164,27 +165,37 @@ public class MyController {
 		return new ModelAndView("delete");
 	}
 	
-	@RequestMapping(value = "pwd_ck.do", produces = "text/html; charset=utf-8")
+	@RequestMapping(value="pwd_ck.do", produces = "text/html; charset=utf-8")
 	@ResponseBody
-	public Map<String, Integer> pwd_chkCommand(@ModelAttribute("b_idx")String b_idx){
+	public String pwd_chkCommand(@ModelAttribute("pwd")String pwd,
+			@ModelAttribute("b_idx")String b_idx){
 		try {
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			int result1 = myService.deleteCVOComm_All(b_idx); 
-			int result2 = myService.deleteBVO(b_idx);
-			if(result1>0 && result2>0) {
-				map.put("result", 1);
-			}else {
-				map.put("result", 0);
-			}
-			return map;
+			BVO bvo = new BVO();
+			
+			bvo.setB_idx(b_idx);
+			bvo.setPwd(pwd);
+		
+			int result = myService.selectPwdchk(bvo);
+			
+			return String.valueOf(result);
 		} catch (Exception e) {
+			System.out.println(e);
 			return null; 
 		}
 	}
 	@RequestMapping("delete_ok.do")
 	public ModelAndView deleteOKCommand(@ModelAttribute("cPage")String cPage,
 			@ModelAttribute("b_idx")String b_idx) {
-		return new ModelAndView("delete");
+		try {
+			System.out.println(b_idx);
+			System.out.println(cPage);
+			int result1 = myService.deleteCVOComm_All(b_idx); 
+			int result2 = myService.deleteBVO(b_idx);
+			return new ModelAndView("redirect:list.do?cPage="+cPage);
+		} catch (Exception e) {
+		}
+		return null;
+		
 	}
 }
 

@@ -18,5 +18,7 @@ public interface MyService {
 	int updateBVO(BVO bvo) throws Exception;
 	List<CVO> selectCVOList(String b_idx) throws Exception;
 	int insertCVO(CVO cvo) throws Exception;
-	int deleteCVO(String c_idx) throws Exception; 
+	int deleteCVO(String c_idx) throws Exception;
+	// pwd 체크
+	int selectPwdchk(BVO bvo) throws Exception;
 }
