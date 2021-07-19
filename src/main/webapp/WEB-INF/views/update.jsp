@@ -125,11 +125,11 @@
 					<td>
 						<c:choose>
 							<c:when test="${empty bvo.file_name }">
-								<input type="file" name="file_name">이전파일없음
+								<input type="file" name="f_name">이전파일없음
 								<input type="hidden" name="old_file_name" value="">
 							</c:when>
 							<c:otherwise>
-								<input type="file" name="file_name"> 이전파일(${bvo.file_name})
+								<input type="file" name="f_name"> 이전파일(${bvo.file_name})
 								<input type="hidden" name="old_file_name" value="${bvo.file_name}">
 							</c:otherwise>
 						</c:choose>

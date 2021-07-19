@@ -65,7 +65,11 @@
 		delete from bbs_t where b_idx = #{b_idx}
 	</delete>
 	
-	
+	<!-- 원글 업데이트 -->
+	<update id="update" parameterType="com.ict.vo.BVO">
+		update bbs_t set subject=#{subject}, writer=#{writer}, 
+				content=#{content}, file_name=#{file_name} where b_idx = #{b_idx}
+	</update>
 </mapper>
 
 
