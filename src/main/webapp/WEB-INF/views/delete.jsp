@@ -59,11 +59,10 @@
 			dataType :"json",
 			async : false,
 			success : function(data) {
-				console.log(data);
 				if(data=='0'){
 					alert("비밀번호 틀림");
 					$("#pwd").val("");
-					$("#pwd").focus("");
+					$("#pwd").focus();
 				
 				}else if(data=='1'){
 					alert("비밀번호 맞습니다.");

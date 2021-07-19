@@ -45,21 +45,54 @@
 	.title{background:lightsteelblue}
 	.odd {background:silver}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 	function list_go(f) {
-		f.action="${pageContext.request.contextPath}/MyController?cmd=list&cPage=${cPage}";
+		f.action="list.do?cPage=${cPage}";
 		f.submit();
 	}
+	/* vo을 이용한 비밀번호 처리 
 	function update_ok(f) {
 		if("${bvo.pwd}" == f.pwd.value){
 			alert("수정하기");
-			f.action="${pageContext.request.contextPath}/MyController?cmd=update_ok&cPage=${cPage}";
+			f.action="update_ok.do?cPage=${cPage}";
 			f.submit();
 		}else{
 			alert("비밀번호틀림");
 			f.pwd.value="";
 			f.pwd.focus();
 			return;
+		}
+	}
+	*/
+	// ajax를 이용해서 비밀번호 맞는지 체크하기 
+	function update_ok(f) {
+		// 비밀번호가 맞아야 chk가 true로 변경
+		var chk = false;
+		$.ajax({
+			url: "pwd_ck.do",
+			method : "post",
+			data : "pwd="+$("#pwd").val()+"&b_idx=${b_idx}",
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				if(data=='0'){
+					alert("비밀번호 틀림");
+					$("#pwd").val("");
+					$("#pwd").focus();
+				}else if(data=='1'){
+					alert("비밀번호 맞음");
+					chk = true;
+				}
+			},
+			error :function(){
+				alert("읽기실패");
+			}
+		});
+		
+		if(chk){
+			f.action ="update_ok.do";
+			f.submit();
 		}
 	}
 </script>
@@ -104,13 +137,14 @@
 				</tr>
 				<tr>
 					<th>비밀번호:</th>
-					<td><input type="password" name="pwd" size="12"></td>
+					<td><input type="password" name="pwd" id="pwd"></td>
 				</tr>
 				<tr>
 					<td colspan="2">
 						<input type="button" value="수정" onclick="update_ok(this.form)">
-						<input type="reset" value="다시">
-						<input type="button" value="목록" onclick="list_go(this.form)"/>
+						<input type="button" value="목록" onclick="list_go(this.form)">
+						<input type="hidden" name="b_idx" value="${b_idx}">
+						<input type="hidden" name="cPage" value="${cPage}">
 					</td>
 				</tr>
 			</tbody>

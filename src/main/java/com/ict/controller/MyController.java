@@ -187,15 +187,32 @@ public class MyController {
 	public ModelAndView deleteOKCommand(@ModelAttribute("cPage")String cPage,
 			@ModelAttribute("b_idx")String b_idx) {
 		try {
-			System.out.println(b_idx);
-			System.out.println(cPage);
 			int result1 = myService.deleteCVOComm_All(b_idx); 
 			int result2 = myService.deleteBVO(b_idx);
 			return new ModelAndView("redirect:list.do?cPage="+cPage);
 		} catch (Exception e) {
 		}
 		return null;
-		
+	}
+	@RequestMapping("update.do")
+	public ModelAndView updateCommand(@ModelAttribute("cPage")String cPage,
+			@ModelAttribute("b_idx")String b_idx) {
+		try {
+			ModelAndView mv = new ModelAndView("update");
+			BVO bvo = myService.selectBVOOneList(b_idx);
+			mv.addObject("bvo", bvo);
+			return mv;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+	@RequestMapping("update_ok.do")
+	public ModelAndView updateokCommand() {
+		try {
+			
+		} catch (Exception e) {
+		}
+		return null;
 	}
 }
 

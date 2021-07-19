@@ -64,6 +64,11 @@ public class MyServiceImpl implements MyService{
 	public int selectPwdchk(BVO bvo) throws Exception {
 		return myDAO.selectPwdchk(bvo);
 	}
+	// 업데이트 전 정보 가져오기 
+	@Override
+	public BVO selectBVOOneList(String b_idx) throws Exception {
+		return myDAO.selectBVOOneList(b_idx);
+	}
 	@Override
 	public int updateBVO(BVO bvo) throws Exception {
 		// TODO Auto-generated method stub
